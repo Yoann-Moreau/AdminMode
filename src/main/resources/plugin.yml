@@ -1,0 +1,10 @@
+name: AdminMode
+description: $description
+version: '${version}'
+
+main: fr.ethilvan.adminMode.AdminMode
+api-version: '26.1.2'
+load: POSTWORLD
+
+authors: [ Hironak ]
+website: ethilvan.fr
