@@ -1,17 +1,27 @@
 package fr.ethilvan.adminMode;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.HashMap;
+import java.util.UUID;
 
 
-public final class AdminMode extends JavaPlugin {
+public class AdminMode {
 
-	@Override
-	public void onEnable() {
-		// Plugin startup logic
+	private final AdminModePlugin plugin;
+
+	private final HashMap<UUID, Boolean> adminModeStatuses = new HashMap<>();
+
+
+	public AdminMode(AdminModePlugin plugin) {
+		this.plugin = plugin;
 	}
 
-	@Override
-	public void onDisable() {
-		// Plugin shutdown logic
+
+	public AdminModePlugin getPlugin() {
+		return this.plugin;
+	}
+
+
+	public HashMap<UUID, Boolean> getAdminModeStatuses() {
+		return this.adminModeStatuses;
 	}
 }
