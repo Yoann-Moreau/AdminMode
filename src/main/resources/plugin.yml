@@ -5,6 +5,7 @@ version: '${version}'
 main: fr.ethilvan.adminMode.AdminMode
 api-version: '26.1.2'
 load: POSTWORLD
+softdepend: [ Multiverse-Inventories ]
 
 authors: [ Hironak ]
 website: ethilvan.fr

@@ -6,10 +6,16 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven {
+        name = "multiverseMultiverseReleases"
+        url = uri("https://repo.onarandombox.com/multiverse-releases")
+    }
+
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("org.mvplugins.multiverse.inventories:multiverse-inventories:5.3.5")
 }
 
 java {
