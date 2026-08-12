@@ -3,6 +3,7 @@ package fr.ethilvan.adminMode.command;
 import fr.ethilvan.adminMode.AdminMode;
 import fr.ethilvan.adminMode.command.subcommands.SaveDefaultInventory;
 import fr.ethilvan.adminMode.command.subcommands.SaveInventory;
+import fr.ethilvan.adminMode.inventory.InventorySnapshot;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
@@ -125,8 +126,15 @@ public class AdminModeCommand implements TabExecutor {
 
 
 	private void activateAdminMode(Player player) {
+		InventorySnapshot inventorySnapshot = new InventorySnapshot(
+				player.getInventory().getContents().clone(),
+				player.getInventory().getArmorContents().clone(),
+				player.getInventory().getExtraContents().clone()
+		);
+		adminMode.getPlayerInventories().put(player.getUniqueId(), inventorySnapshot);
 		adminMode.getAdminModeStatuses().put(player.getUniqueId(), true);
 		player.setGameMode(GameMode.CREATIVE);
+		player.getInventory().setContents(adminMode.getDefaultInventory().getContents());
 		player.sendRichMessage("<green>You are now in Admin Mode.");
 	}
 
@@ -134,6 +142,10 @@ public class AdminModeCommand implements TabExecutor {
 	private void deactivateAdminMode(Player player) {
 		adminMode.getAdminModeStatuses().put(player.getUniqueId(), false);
 		player.setGameMode(GameMode.SURVIVAL);
+		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
+		player.getInventory().setContents(inventorySnapshot.getMainInventory());
+		player.getInventory().setArmorContents(inventorySnapshot.getArmorInventory());
+		player.getInventory().setExtraContents(inventorySnapshot.getExtraInventory());
 		player.sendRichMessage("<gray>You are no longer in Admin Mode.");
 	}
 }

@@ -1,4 +1,4 @@
-package fr.ethilvan.adminMode.tools;
+package fr.ethilvan.adminMode.inventory;
 
 import fr.ethilvan.adminMode.AdminMode;
 import fr.ethilvan.adminMode.config.ConfigFile;
