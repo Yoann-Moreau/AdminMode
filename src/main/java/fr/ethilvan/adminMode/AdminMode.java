@@ -3,6 +3,7 @@ package fr.ethilvan.adminMode;
 import fr.ethilvan.adminMode.config.ConfigFile;
 import fr.ethilvan.adminMode.inventory.InventorySection;
 import fr.ethilvan.adminMode.inventory.InventorySnapshot;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +22,7 @@ public class AdminMode {
 	private final HashMap<UUID, InventorySnapshot> adminModeInventories = new HashMap<>();
 	private final HashMap<UUID, InventorySnapshot> playerInventories = new HashMap<>();
 	private final HashMap<UUID, Location> playerLocations = new HashMap<>();
+	private final HashMap<UUID, GameMode> playerGameModes = new HashMap<>();
 
 	private InventorySnapshot defaultInventory;
 
@@ -56,6 +58,11 @@ public class AdminMode {
 
 	public HashMap<UUID, Location> getPlayerLocations() {
 		return this.playerLocations;
+	}
+
+
+	public HashMap<UUID, GameMode> getPlayerGameModes() {
+		return this.playerGameModes;
 	}
 
 

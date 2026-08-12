@@ -8,6 +8,7 @@ import fr.ethilvan.adminMode.inventory.InventorySnapshot;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -129,6 +130,9 @@ public class AdminModeCommand implements TabExecutor {
 	private void activateAdminMode(Player player) {
 		InventorySnapshot inventorySnapshot = InventoryManagement.getPlayerInventory(player);
 		adminMode.getPlayerInventories().put(player.getUniqueId(), inventorySnapshot);
+		Location location = player.getLocation().clone();
+		adminMode.getPlayerLocations().put(player.getUniqueId(), location);
+		adminMode.getPlayerGameModes().put(player.getUniqueId(), player.getGameMode());
 		adminMode.getAdminModeStatuses().put(player.getUniqueId(), true);
 		player.setGameMode(GameMode.CREATIVE);
 		InventoryManagement.setPlayerInventoryFromSnapshot(player, adminMode.getDefaultInventory());
@@ -138,9 +142,10 @@ public class AdminModeCommand implements TabExecutor {
 
 	private void deactivateAdminMode(Player player) {
 		adminMode.getAdminModeStatuses().put(player.getUniqueId(), false);
-		player.setGameMode(GameMode.SURVIVAL);
+		player.setGameMode(adminMode.getPlayerGameModes().get(player.getUniqueId()));
 		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
 		InventoryManagement.setPlayerInventoryFromSnapshot(player, inventorySnapshot);
+		player.teleportAsync(adminMode.getPlayerLocations().get(player.getUniqueId()));
 		player.sendRichMessage("<gray>You are no longer in Admin Mode.");
 	}
 }
