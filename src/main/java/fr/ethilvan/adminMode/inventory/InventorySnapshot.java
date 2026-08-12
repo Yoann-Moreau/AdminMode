@@ -10,6 +10,12 @@ public class InventorySnapshot {
 	private ItemStack[] extraInventory;
 
 
+	public InventorySnapshot() {
+		this.mainInventory = new ItemStack[0];
+		this.armorInventory = new ItemStack[0];
+		this.extraInventory = new ItemStack[0];
+	}
+
 	public InventorySnapshot(
 			ItemStack[] mainInventory,
 			ItemStack[] armorInventory,

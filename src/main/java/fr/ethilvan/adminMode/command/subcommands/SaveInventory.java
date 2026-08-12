@@ -48,11 +48,7 @@ public class SaveInventory extends Subcommand {
 			return true;
 		}
 		InventoryManagement.saveInventoryToConfig(adminMode, ConfigFile.ADMIN_MODE_INVENTORY, player);
-		InventorySnapshot inventorySnapshot = new InventorySnapshot(
-				player.getInventory().getContents().clone(),
-				player.getInventory().getArmorContents().clone(),
-				player.getInventory().getExtraContents().clone()
-		);
+		InventorySnapshot inventorySnapshot = InventoryManagement.getPlayerInventory(player);
 		adminMode.getAdminModeInventories().put(player.getUniqueId(), inventorySnapshot);
 		player.sendRichMessage("<green>Admin Mode inventory saved successfully.");
 		return true;

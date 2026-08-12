@@ -1,12 +1,10 @@
 package fr.ethilvan.adminMode;
 
 import fr.ethilvan.adminMode.config.ConfigFile;
+import fr.ethilvan.adminMode.inventory.InventorySection;
 import fr.ethilvan.adminMode.inventory.InventorySnapshot;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -24,13 +22,13 @@ public class AdminMode {
 	private final HashMap<UUID, InventorySnapshot> playerInventories = new HashMap<>();
 	private final HashMap<UUID, Location> playerLocations = new HashMap<>();
 
-	private final Inventory defaultInventory;
+	private InventorySnapshot defaultInventory;
 
 
 	public AdminMode(AdminModePlugin plugin) {
 		this.plugin = plugin;
 
-		defaultInventory = Bukkit.createInventory(null, InventoryType.PLAYER);
+		defaultInventory = new InventorySnapshot();
 
 		loadInventories();
 	}
@@ -61,8 +59,12 @@ public class AdminMode {
 	}
 
 
-	public Inventory getDefaultInventory() {
+	public InventorySnapshot getDefaultInventory() {
 		return this.defaultInventory;
+	}
+
+	public void setDefaultInventory(InventorySnapshot defaultInventory) {
+		this.defaultInventory = defaultInventory;
 	}
 
 
@@ -77,11 +79,18 @@ public class AdminMode {
 			return;
 		}
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-		List<?> content = config.getList(ConfigFile.DEFAULT_INVENTORY.getConfigurationSection());
-		if (content == null) {
+		String section = ConfigFile.DEFAULT_INVENTORY.getConfigurationSection();
+		List<?> mainContent = config.getList(section + "." + InventorySection.MAIN.getSection());
+		List<?> armorContent = config.getList(section + "." + InventorySection.ARMOR.getSection());
+		List<?> extraContent = config.getList(section + "." + InventorySection.EXTRA.getSection());
+		if (mainContent == null || armorContent == null || extraContent == null) {
 			return;
 		}
-		ItemStack[] items = content.toArray(new ItemStack[0]);
-		getDefaultInventory().setContents(items);
+		ItemStack[] mainItems = mainContent.toArray(new ItemStack[0]);
+		ItemStack[] armorItems = armorContent.toArray(new ItemStack[0]);
+		ItemStack[] extraItems = extraContent.toArray(new ItemStack[0]);
+		getDefaultInventory().setMainInventory(mainItems);
+		getDefaultInventory().setArmorInventory(armorItems);
+		getDefaultInventory().setExtraInventory(extraItems);
 	}
 }
