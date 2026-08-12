@@ -3,7 +3,6 @@ package fr.ethilvan.adminMode.command.subcommands;
 import fr.ethilvan.adminMode.AdminMode;
 import fr.ethilvan.adminMode.command.Subcommand;
 import fr.ethilvan.adminMode.config.ConfigFile;
-import fr.ethilvan.adminMode.inventory.InventoryManagement;
 import fr.ethilvan.adminMode.inventory.InventorySnapshot;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -47,9 +46,9 @@ public class SaveDefaultInventory extends Subcommand {
 			player.sendRichMessage("<red>You must be in Admin Mode to perform this command.");
 			return true;
 		}
-		InventorySnapshot inventorySnapshot = InventoryManagement.getPlayerInventory(player);
+		InventorySnapshot inventorySnapshot = adminMode.getInventoryManager().getPlayerInventory(player);
 		adminMode.setDefaultInventory(inventorySnapshot);
-		InventoryManagement.saveInventoryToConfig(adminMode, ConfigFile.DEFAULT_INVENTORY, player);
+		adminMode.getInventoryManager().saveInventoryToConfig(ConfigFile.DEFAULT_INVENTORY, player);
 		player.sendRichMessage("<green>Default inventory saved successfully.");
 		return true;
 	}

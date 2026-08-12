@@ -1,5 +1,7 @@
 package fr.ethilvan.adminMode;
 
+import fr.ethilvan.adminMode.managers.InventoryManager;
+import fr.ethilvan.adminMode.managers.StateManager;
 import fr.ethilvan.adminMode.config.ConfigFile;
 import fr.ethilvan.adminMode.inventory.InventorySection;
 import fr.ethilvan.adminMode.inventory.InventorySnapshot;
@@ -26,9 +28,15 @@ public class AdminMode {
 
 	private InventorySnapshot defaultInventory;
 
+	private final StateManager stateManager;
+	private final InventoryManager inventoryManager;
+
 
 	public AdminMode(AdminModePlugin plugin) {
 		this.plugin = plugin;
+
+		stateManager = new StateManager(this);
+		inventoryManager = new InventoryManager(this);
 
 		defaultInventory = new InventorySnapshot();
 
@@ -72,6 +80,16 @@ public class AdminMode {
 
 	public void setDefaultInventory(InventorySnapshot defaultInventory) {
 		this.defaultInventory = defaultInventory;
+	}
+
+
+	public StateManager getStateManager() {
+		return this.stateManager;
+	}
+
+
+	public InventoryManager getInventoryManager() {
+		return this.inventoryManager;
 	}
 
 

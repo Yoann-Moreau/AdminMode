@@ -1,7 +1,9 @@
-package fr.ethilvan.adminMode.inventory;
+package fr.ethilvan.adminMode.managers;
 
 import fr.ethilvan.adminMode.AdminMode;
 import fr.ethilvan.adminMode.config.ConfigFile;
+import fr.ethilvan.adminMode.inventory.InventorySection;
+import fr.ethilvan.adminMode.inventory.InventorySnapshot;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -11,14 +13,21 @@ import java.util.Arrays;
 import java.util.UUID;
 
 
-public class InventoryManagement {
+public class InventoryManager {
 
-	public static void saveInventoryToConfig(
-			AdminMode adminMode,
+	private final AdminMode adminMode;
+
+
+	public InventoryManager(AdminMode adminMode) {
+		this.adminMode = adminMode;
+	}
+
+
+	public void saveInventoryToConfig(
 			ConfigFile configFile,
 			Player player
 	) {
-		InventorySnapshot inventorySnapshot = InventoryManagement.getPlayerInventory(player);
+		InventorySnapshot inventorySnapshot = getPlayerInventory(player);
 		UUID playerUUID = player.getUniqueId();
 		String filePath = configFile.getFilePath();
 		if (configFile != ConfigFile.DEFAULT_INVENTORY) {
@@ -43,7 +52,7 @@ public class InventoryManagement {
 	}
 
 
-	public static InventorySnapshot getPlayerInventory(Player player) {
+	public InventorySnapshot getPlayerInventory(Player player) {
 		return new InventorySnapshot(
 				player.getInventory().getContents().clone(),
 				player.getInventory().getArmorContents().clone(),
@@ -52,7 +61,7 @@ public class InventoryManagement {
 	}
 
 
-	public static void setPlayerInventoryFromSnapshot(Player player, InventorySnapshot inventorySnapshot) {
+	public void setPlayerInventoryFromSnapshot(Player player, InventorySnapshot inventorySnapshot) {
 		player.getInventory().setContents(inventorySnapshot.getMainInventory());
 		player.getInventory().setArmorContents(inventorySnapshot.getArmorInventory());
 		player.getInventory().setExtraContents(inventorySnapshot.getExtraInventory());
