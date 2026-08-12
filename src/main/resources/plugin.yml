@@ -3,7 +3,7 @@ description: $description
 version: '${version}'
 
 main: fr.ethilvan.adminMode.AdminModePlugin
-api-version: '26.1.2'
+api-version: '26.2'
 load: POSTWORLD
 softdepend: [ Multiverse-Inventories ]
 
