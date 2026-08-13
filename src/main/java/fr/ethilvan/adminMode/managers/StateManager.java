@@ -58,7 +58,15 @@ public class StateManager {
 		adminMode.getPlayerGameModes().put(player.getUniqueId(), player.getGameMode());
 		adminMode.getPlayerStatuses().put(player.getUniqueId(), true);
 		player.setGameMode(GameMode.CREATIVE);
-		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, adminMode.getDefaultInventory());
+		if (adminMode.getPlayerAdminModeInventories().get(player.getUniqueId()) == null) {
+			adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, adminMode.getDefaultInventory());
+		}
+		else {
+			adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(
+					player,
+					adminMode.getPlayerAdminModeInventories().get(player.getUniqueId())
+			);
+		}
 		player.sendRichMessage("<green>You are now in Admin Mode.");
 	}
 

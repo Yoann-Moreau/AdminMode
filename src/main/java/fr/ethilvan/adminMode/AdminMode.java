@@ -42,8 +42,8 @@ public class AdminMode {
 
 		defaultInventory = new InventorySnapshot();
 
-		loadStates();
-		loadInventories();
+		loadDefaultInventory();
+		loadPlayerStates();
 	}
 
 
@@ -101,18 +101,20 @@ public class AdminMode {
 	}
 
 
-	private void loadStates() {
+	private void loadPlayerStates() {
 		String filePath = ConfigFile.PLAYER_STATUS.getFilePath();
 		File playerDirectory = new File(plugin.getDataFolder(), filePath.substring(0, filePath.lastIndexOf("/")));
 		List<String> playerFiles = getFileManager().getFilesFromDirectory(playerDirectory);
 		plugin.getLogger().info(playerFiles.size() + " player files have been loaded.");
 
+		ConfigFile playerStatusFile = ConfigFile.PLAYER_STATUS;
+		ConfigFile adminModeInventoryFile = ConfigFile.ADMIN_MODE_INVENTORY;
+		ConfigFile playerInventoryFile = ConfigFile.PLAYER_INVENTORY;
+		ConfigFile playerLocationFile = ConfigFile.PLAYER_LOCATION;
+		ConfigFile playerGamemodeFile = ConfigFile.PLAYER_GAMEMODE;
+
 		for (String playerFileName : playerFiles) {
 			UUID uuid = UUID.fromString(playerFileName.substring(0, playerFileName.indexOf(".yml")));
-			ConfigFile playerStatusFile = ConfigFile.PLAYER_STATUS;
-			ConfigFile playerInventoryFile = ConfigFile.PLAYER_INVENTORY;
-			ConfigFile playerLocationFile = ConfigFile.PLAYER_LOCATION;
-			ConfigFile playerGamemodeFile = ConfigFile.PLAYER_GAMEMODE;
 			// Get player file
 			filePath += uuid + ".yml";
 			File file = new File(plugin.getDataFolder(), filePath);
@@ -122,6 +124,7 @@ public class AdminMode {
 			// Get player states values from config
 			YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 			Boolean status = config.getBoolean(playerStatusFile.getConfigurationSection());
+			List<?> adminModeInventory = config.getList(adminModeInventoryFile.getConfigurationSection());
 			List<?> baseInventory = config.getList(playerInventoryFile.getConfigurationSection());
 			Location location = config.getLocation(playerLocationFile.getConfigurationSection());
 			String gamemode = config.getString(playerGamemodeFile.getConfigurationSection());
@@ -130,16 +133,15 @@ public class AdminMode {
 			}
 			// Set in memory player states
 			ItemStack[] mainItems = baseInventory.toArray(new ItemStack[0]);
+			if (adminModeInventory != null) {
+				ItemStack[] adminModeItems = adminModeInventory.toArray(new ItemStack[0]);
+				getPlayerAdminModeInventories().put(uuid, new InventorySnapshot(adminModeItems));
+			}
 			getPlayerStatuses().put(uuid, status);
 			getPlayerInventories().put(uuid, new InventorySnapshot(mainItems));
 			getPlayerLocations().put(uuid, location);
 			getPlayerGameModes().put(uuid, GameMode.valueOf(gamemode));
 		}
-	}
-
-
-	private void loadInventories() {
-		loadDefaultInventory();
 	}
 
 
