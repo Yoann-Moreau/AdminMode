@@ -89,9 +89,9 @@ public class StateManager {
 		// Set player state
 		adminMode.getPlayerStatuses().put(player.getUniqueId(), false);
 		player.setGameMode(adminMode.getPlayerGameModes().get(player.getUniqueId()));
+		player.teleport(adminMode.getPlayerLocations().get(player.getUniqueId()));
 		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
 		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);
-		player.teleportAsync(adminMode.getPlayerLocations().get(player.getUniqueId()));
 		player.sendRichMessage("<gray>You are no longer in Admin Mode.");
 	}
 }
