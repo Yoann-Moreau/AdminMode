@@ -1,10 +1,15 @@
 package fr.ethilvan.adminMode.managers;
 
 import fr.ethilvan.adminMode.AdminMode;
+import fr.ethilvan.adminMode.config.ConfigFile;
 import fr.ethilvan.adminMode.inventory.InventorySnapshot;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class StateManager {
@@ -17,13 +22,41 @@ public class StateManager {
 	}
 
 
+	public void savePlayerStateToConfig(Player player) {
+		ConfigFile playerStatusFile = ConfigFile.PLAYER_STATUS;
+		ConfigFile playerInventoryFile = ConfigFile.PLAYER_INVENTORY;
+		ConfigFile playerLocationFile = ConfigFile.PLAYER_LOCATION;
+		ConfigFile playerGamemodeFile = ConfigFile.PLAYER_GAMEMODE;
+		String filePath = playerStatusFile.getFilePath();
+		filePath += player.getUniqueId() + ".yml";
+		File file = new File(adminMode.getPlugin().getDataFolder(), filePath);
+		YamlConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
+		String statusSection = playerStatusFile.getConfigurationSection();
+		String inventorySection = playerInventoryFile.getConfigurationSection();
+		String locationSection = playerLocationFile.getConfigurationSection();
+		String gamemodeSection = playerGamemodeFile.getConfigurationSection();
+		InventorySnapshot inventorySnapshot = adminMode.getInventoryManager().getPlayerInventorySnapshot(player);
+		adminMode.getInventoryManager().setInventoryToFileConfig(fileConfiguration, inventorySection, inventorySnapshot);
+		fileConfiguration.set(statusSection, Boolean.TRUE);
+		fileConfiguration.set(locationSection, player.getLocation());
+		fileConfiguration.set(gamemodeSection, player.getGameMode().toString());
+		try {
+			fileConfiguration.save(file);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
 	public void activateAdminMode(Player player) {
-		InventorySnapshot inventorySnapshot = adminMode.getInventoryManager().getPlayerInventory(player);
+		adminMode.getStateManager().savePlayerStateToConfig(player);
+		InventorySnapshot inventorySnapshot = adminMode.getInventoryManager().getPlayerInventorySnapshot(player);
 		adminMode.getPlayerInventories().put(player.getUniqueId(), inventorySnapshot);
 		Location location = player.getLocation().clone();
 		adminMode.getPlayerLocations().put(player.getUniqueId(), location);
 		adminMode.getPlayerGameModes().put(player.getUniqueId(), player.getGameMode());
-		adminMode.getAdminModeStatuses().put(player.getUniqueId(), true);
+		adminMode.getPlayerStatuses().put(player.getUniqueId(), true);
 		player.setGameMode(GameMode.CREATIVE);
 		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, adminMode.getDefaultInventory());
 		player.sendRichMessage("<green>You are now in Admin Mode.");
@@ -31,7 +64,22 @@ public class StateManager {
 
 
 	public void deactivateAdminMode(Player player) {
-		adminMode.getAdminModeStatuses().put(player.getUniqueId(), false);
+		// Save player status to player config file
+		ConfigFile playerStatusFile = ConfigFile.PLAYER_STATUS;
+		String filePath = playerStatusFile.getFilePath();
+		filePath += player.getUniqueId() + ".yml";
+		File file = new File(adminMode.getPlugin().getDataFolder(), filePath);
+		YamlConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
+		String statusSection = playerStatusFile.getConfigurationSection();
+		fileConfiguration.set(statusSection, Boolean.FALSE);
+		try {
+			fileConfiguration.save(file);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		// Set player state
+		adminMode.getPlayerStatuses().put(player.getUniqueId(), false);
 		player.setGameMode(adminMode.getPlayerGameModes().get(player.getUniqueId()));
 		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
 		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);

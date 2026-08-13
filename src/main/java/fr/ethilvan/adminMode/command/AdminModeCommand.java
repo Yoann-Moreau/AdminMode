@@ -110,11 +110,11 @@ public class AdminModeCommand implements TabExecutor {
 
 
 	private void perform(Player player) {
-		if (!adminMode.getAdminModeStatuses().containsKey(player.getUniqueId())) {
+		if (!adminMode.getPlayerStatuses().containsKey(player.getUniqueId())) {
 			adminMode.getStateManager().activateAdminMode(player);
 			return;
 		}
-		boolean isInAdminMode = adminMode.getAdminModeStatuses().get(player.getUniqueId());
+		boolean isInAdminMode = adminMode.getPlayerStatuses().get(player.getUniqueId());
 		if (isInAdminMode) {
 			adminMode.getStateManager().deactivateAdminMode(player);
 			return;

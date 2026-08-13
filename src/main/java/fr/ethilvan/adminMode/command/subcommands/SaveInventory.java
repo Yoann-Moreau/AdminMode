@@ -41,14 +41,14 @@ public class SaveInventory extends Subcommand {
 
 	@Override
 	public boolean perform(Player player, @NotNull String[] args) {
-		if (!adminMode.getAdminModeStatuses().containsKey(player.getUniqueId()) ||
-				adminMode.getAdminModeStatuses().get(player.getUniqueId()) == false) {
+		if (!adminMode.getPlayerStatuses().containsKey(player.getUniqueId()) ||
+				adminMode.getPlayerStatuses().get(player.getUniqueId()) == false) {
 			player.sendRichMessage("<red>You must be in Admin Mode to perform this command.");
 			return true;
 		}
 		adminMode.getInventoryManager().saveInventoryToConfig(ConfigFile.ADMIN_MODE_INVENTORY, player);
-		InventorySnapshot inventorySnapshot = adminMode.getInventoryManager().getPlayerInventory(player);
-		adminMode.getAdminModeInventories().put(player.getUniqueId(), inventorySnapshot);
+		InventorySnapshot inventorySnapshot = adminMode.getInventoryManager().getPlayerInventorySnapshot(player);
+		adminMode.getPlayerAdminModeInventories().put(player.getUniqueId(), inventorySnapshot);
 		player.sendRichMessage("<green>Admin Mode inventory saved successfully.");
 		return true;
 	}

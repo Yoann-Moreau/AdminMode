@@ -2,7 +2,6 @@ package fr.ethilvan.adminMode.managers;
 
 import fr.ethilvan.adminMode.AdminMode;
 import fr.ethilvan.adminMode.config.ConfigFile;
-import fr.ethilvan.adminMode.inventory.InventorySection;
 import fr.ethilvan.adminMode.inventory.InventorySnapshot;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -27,7 +26,7 @@ public class InventoryManager {
 			ConfigFile configFile,
 			Player player
 	) {
-		InventorySnapshot inventorySnapshot = getPlayerInventory(player);
+		InventorySnapshot inventorySnapshot = getPlayerInventorySnapshot(player);
 		UUID playerUUID = player.getUniqueId();
 		String filePath = configFile.getFilePath();
 		if (configFile != ConfigFile.DEFAULT_INVENTORY) {
@@ -37,12 +36,7 @@ public class InventoryManager {
 		File file = new File(adminMode.getPlugin().getDataFolder(), filePath);
 		YamlConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
 		String configSection = configFile.getConfigurationSection();
-		String mainSection = configSection + "." + InventorySection.MAIN.getSection();
-		String armorSection = configSection + "." + InventorySection.ARMOR.getSection();
-		String extraSection = configSection + "." + InventorySection.EXTRA.getSection();
-		fileConfiguration.set(mainSection, Arrays.asList(inventorySnapshot.getMainInventory()));
-		fileConfiguration.set(armorSection, Arrays.asList(inventorySnapshot.getArmorInventory()));
-		fileConfiguration.set(extraSection, Arrays.asList(inventorySnapshot.getExtraInventory()));
+		setInventoryToFileConfig(fileConfiguration, configSection, inventorySnapshot);
 		try {
 			fileConfiguration.save(file);
 		}
@@ -52,18 +46,21 @@ public class InventoryManager {
 	}
 
 
-	public InventorySnapshot getPlayerInventory(Player player) {
-		return new InventorySnapshot(
-				player.getInventory().getContents().clone(),
-				player.getInventory().getArmorContents().clone(),
-				player.getInventory().getExtraContents().clone()
-		);
+	public void setInventoryToFileConfig(
+			YamlConfiguration fileConfiguration,
+			String configSection,
+			InventorySnapshot inventorySnapshot
+	) {
+		fileConfiguration.set(configSection, Arrays.asList(inventorySnapshot.getMainInventory()));
+	}
+
+
+	public InventorySnapshot getPlayerInventorySnapshot(Player player) {
+		return new InventorySnapshot(player.getInventory().getContents().clone());
 	}
 
 
 	public void setPlayerInventoryFromSnapshot(Player player, InventorySnapshot inventorySnapshot) {
 		player.getInventory().setContents(inventorySnapshot.getMainInventory());
-		player.getInventory().setArmorContents(inventorySnapshot.getArmorInventory());
-		player.getInventory().setExtraContents(inventorySnapshot.getExtraInventory());
 	}
 }

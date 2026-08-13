@@ -6,24 +6,14 @@ import org.bukkit.inventory.ItemStack;
 public class InventorySnapshot {
 
 	private ItemStack[] mainInventory;
-	private ItemStack[] armorInventory;
-	private ItemStack[] extraInventory;
 
 
 	public InventorySnapshot() {
 		this.mainInventory = new ItemStack[0];
-		this.armorInventory = new ItemStack[0];
-		this.extraInventory = new ItemStack[0];
 	}
 
-	public InventorySnapshot(
-			ItemStack[] mainInventory,
-			ItemStack[] armorInventory,
-			ItemStack[] extraInventory
-	) {
+	public InventorySnapshot(ItemStack[] mainInventory) {
 		this.mainInventory = mainInventory;
-		this.armorInventory = armorInventory;
-		this.extraInventory = extraInventory;
 	}
 
 
@@ -33,23 +23,5 @@ public class InventorySnapshot {
 
 	public void setMainInventory(ItemStack[] mainInventory) {
 		this.mainInventory = mainInventory;
-	}
-
-
-	public ItemStack[] getArmorInventory() {
-		return this.armorInventory;
-	}
-
-	public void setArmorInventory(ItemStack[] armorInventory) {
-		this.armorInventory = armorInventory;
-	}
-
-
-	public ItemStack[] getExtraInventory() {
-		return this.extraInventory;
-	}
-
-	public void setExtraInventory(ItemStack[] extraInventory) {
-		this.extraInventory = extraInventory;
 	}
 }

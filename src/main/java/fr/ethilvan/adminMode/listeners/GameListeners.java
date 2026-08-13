@@ -24,7 +24,7 @@ public class GameListeners implements Listener {
 		Player player = event.getPlayer();
 		UUID uuid = player.getUniqueId();
 
-		if (adminMode.getAdminModeStatuses().get(uuid) != true) {
+		if (adminMode.getPlayerStatuses().get(uuid) == null || adminMode.getPlayerStatuses().get(uuid) != true) {
 			return;
 		}
 
