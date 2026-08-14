@@ -5,7 +5,7 @@ version: '${version}'
 main: fr.ethilvan.adminMode.AdminModePlugin
 api-version: '26.2'
 load: POSTWORLD
-softdepend: [ Multiverse-Inventories ]
+softdepend: [ Multiverse-Inventories, LuckPerms ]
 
 authors: [ Hironak ]
 website: ethilvan.fr
@@ -14,4 +14,11 @@ commands:
   adminmode:
     aliases: [am]
     description: Enable/disable Admin Mode for the player executing this command
-    usage: /adminmode
+    usage: /<command>
+permissions:
+  adminmode.admin:
+    default: op
+  adminmode.use:
+    default: op
+  adminmode.savedefaultinventory:
+    default: op

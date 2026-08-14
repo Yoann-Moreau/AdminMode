@@ -11,6 +11,7 @@ public final class AdminModePlugin extends JavaPlugin {
 
 	private AdminMode adminMode;
 
+
 	@Override
 	public void onEnable() {
 		this.adminMode = new AdminMode(this);

@@ -16,6 +16,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.2.build.+")
     compileOnly("org.mvplugins.multiverse.inventories:multiverse-inventories:5.3.5")
+    compileOnly("net.luckperms:api:5.5")
 }
 
 java {

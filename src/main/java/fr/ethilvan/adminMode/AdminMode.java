@@ -2,6 +2,7 @@ package fr.ethilvan.adminMode;
 
 import fr.ethilvan.adminMode.managers.FileManager;
 import fr.ethilvan.adminMode.managers.InventoryManager;
+import fr.ethilvan.adminMode.managers.PermissionManager;
 import fr.ethilvan.adminMode.managers.StateManager;
 import fr.ethilvan.adminMode.config.ConfigFile;
 import fr.ethilvan.adminMode.inventory.InventorySnapshot;
@@ -31,6 +32,7 @@ public class AdminMode {
 	private final FileManager fileManager;
 	private final StateManager stateManager;
 	private final InventoryManager inventoryManager;
+	private PermissionManager permissionManager = null;
 
 
 	public AdminMode(AdminModePlugin plugin) {
@@ -39,6 +41,9 @@ public class AdminMode {
 		fileManager = new FileManager(this);
 		stateManager = new StateManager(this);
 		inventoryManager = new InventoryManager(this);
+		if (getPlugin().getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
+			permissionManager = new PermissionManager(this);
+		}
 
 		defaultInventory = new InventorySnapshot();
 
@@ -98,6 +103,11 @@ public class AdminMode {
 
 	public InventoryManager getInventoryManager() {
 		return this.inventoryManager;
+	}
+
+
+	public PermissionManager getPermissionManager() {
+		return this.permissionManager;
 	}
 
 

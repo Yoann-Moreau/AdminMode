@@ -3,8 +3,6 @@ package fr.ethilvan.adminMode.command;
 import fr.ethilvan.adminMode.AdminMode;
 import fr.ethilvan.adminMode.command.subcommands.SaveDefaultInventory;
 import fr.ethilvan.adminMode.command.subcommands.SaveInventory;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -23,7 +21,7 @@ public class AdminModeCommand implements TabExecutor {
 	private final String name = "adminmode";
 	private final String syntax = "/adminmode";
 	private final String description = "Toggle Admin Mode";
-	private final String permission = "adminmode.adminmode";
+	private final String permission = "adminmode.use";
 
 	private final ArrayList<Subcommand> subcommands = new ArrayList<>();
 
@@ -45,7 +43,7 @@ public class AdminModeCommand implements TabExecutor {
 	) {
 
 		if (!(sender instanceof Player player)) {
-			sender.sendMessage(Component.text("Only players can use this command.", NamedTextColor.RED));
+			sender.sendRichMessage("<red>Only players can use this command.");
 			return false;
 		}
 

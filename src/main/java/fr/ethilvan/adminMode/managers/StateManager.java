@@ -67,6 +67,17 @@ public class StateManager {
 					adminMode.getPlayerAdminModeInventories().get(player.getUniqueId())
 			);
 		}
+		// Add appropriate permission group to player
+		if (adminMode.getPermissionManager() != null) {
+			if (player.hasPermission("adminmode.admin")) {
+				adminMode.getPermissionManager().addGroupAndNotify(player, "adminmode-admin");
+			}
+			else {
+				adminMode.getPermissionManager().addGroupAndNotify(player, "adminmode-member");
+			}
+			return;
+		}
+		//
 		player.sendRichMessage("<green>You are now in Admin Mode.");
 	}
 
@@ -92,6 +103,17 @@ public class StateManager {
 		player.teleport(adminMode.getPlayerLocations().get(player.getUniqueId()));
 		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
 		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);
+		// Remove appropriate permission group from player
+		if (adminMode.getPermissionManager() != null) {
+			if (player.hasPermission("adminmode.admin") && adminMode.getPermissionManager() != null) {
+				adminMode.getPermissionManager().removeGroupAndNotify(player, "adminmode-admin");
+			}
+			else {
+				adminMode.getPermissionManager().removeGroupAndNotify(player, "adminmode-member");
+			}
+			return;
+		}
+		//
 		player.sendRichMessage("<gray>You are no longer in Admin Mode.");
 	}
 }
