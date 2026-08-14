@@ -97,12 +97,8 @@ public class StateManager {
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		// Set player state
-		adminMode.getPlayerStatuses().put(player.getUniqueId(), false);
-		player.setGameMode(adminMode.getPlayerGameModes().get(player.getUniqueId()));
+		//
 		player.teleport(adminMode.getPlayerLocations().get(player.getUniqueId()));
-		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
-		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);
 		// Remove appropriate permission group from player
 		if (adminMode.getPermissionManager() != null) {
 			if (player.hasPermission("adminmode.admin") && adminMode.getPermissionManager() != null) {
@@ -111,9 +107,16 @@ public class StateManager {
 			else {
 				adminMode.getPermissionManager().removeGroupAndNotify(player, "adminmode-member");
 			}
-			return;
 		}
 		//
+		adminMode.getPlayerStatuses().put(player.getUniqueId(), false);
+		player.setGameMode(adminMode.getPlayerGameModes().get(player.getUniqueId()));
+		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
+		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);
+		//
+		if (adminMode.getPermissionManager() != null) {
+			return;
+		}
 		player.sendRichMessage("<gray>You are no longer in Admin Mode.");
 	}
 }
