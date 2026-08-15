@@ -3,8 +3,8 @@
 AdminMode is a PaperMC plugin for Minecraft 26.2. Its purpose is to allow server admins
 to separate their player life from their admin life.
 
-When entering Admin Mode players will have their inventory, position and gamemode saved in
-order to retrieve them unchanged when exiting Admin Mode.
+When entering Admin Mode players will have their inventory, position, gamemode and XP saved 
+in order to retrieve them unchanged when exiting Admin Mode.
 
 Admin Mode itself replaces the player inventory by their Admin Mode inventory previously
 saved or the default one set by an admin. It will also put the player in Creative gamemode.

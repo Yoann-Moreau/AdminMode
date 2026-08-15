@@ -56,6 +56,8 @@ public class StateManager {
 		Location location = player.getLocation().clone();
 		adminMode.getPlayerLocations().put(player.getUniqueId(), location);
 		adminMode.getPlayerGameModes().put(player.getUniqueId(), player.getGameMode());
+		adminMode.getPlayerLevels().put(player.getUniqueId(), player.getLevel());
+		adminMode.getPlayerExperiences().put(player.getUniqueId(), player.getExp());
 		adminMode.getPlayerStatuses().put(player.getUniqueId(), true);
 		player.setGameMode(GameMode.CREATIVE);
 		if (adminMode.getPlayerAdminModeInventories().get(player.getUniqueId()) == null) {
@@ -113,6 +115,8 @@ public class StateManager {
 		player.setGameMode(adminMode.getPlayerGameModes().get(player.getUniqueId()));
 		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
 		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);
+		player.setLevel(adminMode.getPlayerLevels().get(player.getUniqueId()));
+		player.setExp(adminMode.getPlayerExperiences().get(player.getUniqueId()));
 		//
 		if (adminMode.getPermissionManager() != null) {
 			return;
