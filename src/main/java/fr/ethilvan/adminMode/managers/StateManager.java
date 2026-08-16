@@ -58,6 +58,11 @@ public class StateManager {
 		adminMode.getPlayerGameModes().put(player.getUniqueId(), player.getGameMode());
 		adminMode.getPlayerLevels().put(player.getUniqueId(), player.getLevel());
 		adminMode.getPlayerExperiences().put(player.getUniqueId(), player.getExp());
+		adminMode.getPlayerHealths().put(player.getUniqueId(), player.getHealth());
+		adminMode.getPlayerHungers().put(player.getUniqueId(), player.getFoodLevel());
+		adminMode.getPlayerSaturations().put(player.getUniqueId(), player.getSaturation());
+		player.getFoodLevel();
+		player.getSaturation();
 		adminMode.getPlayerStatuses().put(player.getUniqueId(), true);
 		player.setGameMode(GameMode.CREATIVE);
 		if (adminMode.getPlayerAdminModeInventories().get(player.getUniqueId()) == null) {
@@ -117,6 +122,9 @@ public class StateManager {
 		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);
 		player.setLevel(adminMode.getPlayerLevels().get(player.getUniqueId()));
 		player.setExp(adminMode.getPlayerExperiences().get(player.getUniqueId()));
+		player.setHealth(adminMode.getPlayerHealths().get(player.getUniqueId()));
+		player.setFoodLevel(adminMode.getPlayerHungers().get(player.getUniqueId()));
+		player.setSaturation(adminMode.getPlayerSaturations().get(player.getUniqueId()));
 		//
 		if (adminMode.getPermissionManager() != null) {
 			return;

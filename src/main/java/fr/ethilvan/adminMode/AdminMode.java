@@ -28,6 +28,9 @@ public class AdminMode {
 	private final HashMap<UUID, GameMode> playerGameModes = new HashMap<>();
 	private final HashMap<UUID, Integer> playerLevels = new HashMap<>();
 	private final HashMap<UUID, Float> playerExperiences = new HashMap<>();
+	private final HashMap<UUID, Double> playerHealths = new HashMap<>();
+	private final HashMap<UUID, Integer> playerHungers = new HashMap<>();
+	private final HashMap<UUID, Float> playerSaturations = new HashMap<>();
 
 	private InventorySnapshot defaultInventory;
 
@@ -91,6 +94,21 @@ public class AdminMode {
 
 	public HashMap<UUID, Float> getPlayerExperiences() {
 		return this.playerExperiences;
+	}
+
+
+	public HashMap<UUID, Double> getPlayerHealths() {
+		return this.playerHealths;
+	}
+
+
+	public HashMap<UUID, Integer> getPlayerHungers() {
+		return this.playerHungers;
+	}
+
+
+	public HashMap<UUID, Float> getPlayerSaturations() {
+		return this.playerSaturations;
 	}
 
 
