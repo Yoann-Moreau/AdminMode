@@ -64,6 +64,7 @@ public class StateManager {
 		player.getFoodLevel();
 		player.getSaturation();
 		adminMode.getPlayerStatuses().put(player.getUniqueId(), true);
+		player.setSleepingIgnored(true);
 		player.setGameMode(GameMode.CREATIVE);
 		if (adminMode.getPlayerAdminModeInventories().get(player.getUniqueId()) == null) {
 			adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, adminMode.getDefaultInventory());
@@ -118,6 +119,7 @@ public class StateManager {
 		//
 		adminMode.getPlayerStatuses().put(player.getUniqueId(), false);
 		player.setGameMode(adminMode.getPlayerGameModes().get(player.getUniqueId()));
+		player.setSleepingIgnored(false);
 		InventorySnapshot inventorySnapshot = adminMode.getPlayerInventories().get(player.getUniqueId());
 		adminMode.getInventoryManager().setPlayerInventoryFromSnapshot(player, inventorySnapshot);
 		player.setLevel(adminMode.getPlayerLevels().get(player.getUniqueId()));
